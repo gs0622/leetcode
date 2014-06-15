@@ -34,11 +34,57 @@ void postfix2infix(char **in, int n)
     for (i=0;i<n;i++) printf("\"%s\",%s", in[i], (i<n-1)? " ": "]");
     printf(" -> %s -> %d\n", buf, ans);
 }
+static int vstack[16]={}, vtop=-1;
+static char str[16][32], top=-1;
+void p2i(char **in, int n)
+{
+    static char buf[128]={};
+    if (n==0||!in) return;
+    //printf("%d: %s\n", n, in[0]);
+    switch (in[0][0]) {
+    default:
+        vstack[++vtop]=atoi(in[0]);
+        p2i(in+1, n-1);
+        break;
+    case '+': case '-': case '*': case '/':
+        {
+            int ans, op1, op2, ch1, ch2;
+            if (vtop<1) {
+                fprintf(stderr, "not enough operands");
+                exit(-1);
+            }
+            ch1 = (in-2)[0][0], ch2=(in-1)[0][0];
+            //printf("%c %c -> ", ch1, ch2);
+            op1=vstack[vtop-1], op2=vstack[vtop];
+            if (in[0][0]=='+') ans = op1 + op2;
+            if (in[0][0]=='-') ans = op1 - op2;
+            if (in[0][0]=='*') ans = op1 * op2;
+            if (in[0][0]=='/') ans = op1 / op2;
+            if (ch1=='+'||ch1=='-'||ch1=='*'||ch1=='/') {
+                //printf("ch1=%c\n", ch1);
+                sprintf(str[top+1], "(%s %s %d)", str[top], in[0], op2), top+=1;
+            } else if (ch2=='+'||ch2=='-'||ch2=='*'||ch2=='/') {
+                //printf("ch2=%c\n", ch2);
+                sprintf(str[top+1], "(%d %s %s)", op1, in[0], str[top]), top+=1;
+            } else sprintf(str[++top], "(%d %s %d)", op1, in[0], op2);
+            vtop-=2;
+            //printf("%s\n", str[top]);
+            vstack[++vtop] = ans;
+            p2i(in+1, n-1);
+            break;
+        }
+    }
+    //printf("%d: %s vtop[%d]=%d str[%d]=%s\n", n, buf, vtop, vstack[vtop], top, str[top]);
+}
 int main(void)
 {
     char *tokens1[5] = {"2", "1", "+", "3", "*" };
     char *tokens2[5] = {"4", "13", "5", "/", "+"};
-    postfix2infix(tokens1, 5);
-    postfix2infix(tokens2, 5);
+    char *tokens3[7] = {"4", "13", "5", "/", "+", "1", "-"};
+    //postfix2infix(tokens1, 5);
+    //postfix2infix(tokens2, 5);
+    p2i(tokens1, 5); printf("%s\n", str[top]), vtop=-1, top=-1;
+    p2i(tokens2, 5); printf("%s\n", str[top]), vtop=-1, top=-1;
+    p2i(tokens3, 7); printf("%s\n", str[top]), vtop=-1, top=-1;
     return 0;
 }
