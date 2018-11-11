@@ -2,7 +2,10 @@
 Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.
 
 */
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+#include <iostream>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 class Solution {
 public:
