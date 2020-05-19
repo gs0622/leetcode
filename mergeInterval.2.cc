@@ -16,7 +16,7 @@ public:
 		sort(begin(ints), end(ints), [](Interval a, Interval b){return a.start < b.start;});
 		vector<Interval> res(1, ints[0]);
 		for (int i=1; i<ints.size(); ++i) {
-			if (ints[i].start > res.back().end) res.push_back(ints[i]);
+			if (ints[i].start > res.back().end) res.push_back(ints[i]);	// no overlap
 			else res.back().end = max(res.back().end, ints[i].end);
 		}
 		return res;

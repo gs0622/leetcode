@@ -1,8 +1,4 @@
-#include <algorithm>
-#include <iostream>
-#include <set>
-#include <unordered_map>
-#include <stdio.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 struct triple { int x, y, z;};

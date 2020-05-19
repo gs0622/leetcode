@@ -18,8 +18,8 @@ public:
 		while (lo < hi) {
 			mi=lo+(hi-lo)/2;
 			if (nums[mi]==target) return mi;
-			if (nums[mi]>nums[hi]) { // mi must be smaller than hi
-				if (target>=nums[lo] && nums[mi]>target) hi=mi;
+			if (nums[mi]>nums[hi]) { // left half
+				if (target>=nums[lo] && nums[mi]>target) hi=mi; // left half of left half
 				else lo=mi+1;
 			} else {
 				if (target<=nums[hi] && nums[mi]<target) lo=mi+1;

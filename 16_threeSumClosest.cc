@@ -1,3 +1,4 @@
+#include <bits/stdc++.h>
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -5,11 +6,29 @@ using namespace std;
 
 class Solution {
 public:
+	// {-4, -1, 1, 2}
+	int threeSumClosest1(vector<int>& nums, int target) {
+		long n=nums.size(), res=INT_MAX;
+		sort(nums.begin(), nums.end());
+		for (int i=0; i<n-2; ++i) {
+			int lo=i+1, hi=n-1;
+			while (lo<hi) {
+				int sum = nums[i]+nums[lo]+nums[hi];
+				if (sum == target) return sum;
+				int diff = abs(sum-target);
+				if (abs(sum-target)<abs(res-target)) res=sum;
+				if (sum>target) --hi;
+				else ++lo;
+			}
+		}
+		return (int)res;
+	}
+	// O(n^2), sort then two-pointer
 	int threeSumClosest(vector<int>& nums, int target) {
 		int first, second, third, sum;
 		int sz = nums.size();
 		if (sz < 3) return 0;
-		std::sort(nums.begin(), nums.end());
+		std::sort(nums.begin(), nums.end());	// O(nlog(n))
 		int closest = nums[0] + nums[1] + nums[2];
 		for (first = 0; first < sz-2; first++) {
 			second = first+1, third = sz-1;
@@ -24,6 +43,7 @@ public:
 		}
 		return closest;
 	}
+	// O(n^3) naive one
 	int threeSumClosest2(vector<int>& nums, int target) {
 		int i, j, k, sum;
 		int sz = nums.size();
@@ -46,9 +66,12 @@ public:
 int main() {
 	vector<int> S1 {-1, 2, 1, -4};
 	vector<int> S2 {1, 1, -1};
+	vector<int> S3 {1,1,1,1};
 	Solution s;
+	cout << s.threeSumClosest(S3, -100) << ": ";
+	cout << s.threeSumClosest1(S3, -100) << endl;
 	cout << s.threeSumClosest(S1, 1) << ": ";
-	cout << s.threeSumClosest2(S1, 1) << endl;
+	cout << s.threeSumClosest1(S1, 1) << endl;
 	cout << s.threeSumClosest(S2, 2) << ": ";
-	cout << s.threeSumClosest2(S2, 1) << endl;
+	cout << s.threeSumClosest1(S2, 2) << endl;
 }

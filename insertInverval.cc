@@ -1,4 +1,7 @@
 /* https://leetcode.com/problems/insert-interval/description/
+
+Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+You may assume that the intervals were initially sorted according to their start times.
 */
 #include <bits/stdc++.h>
 using namespace std;
@@ -6,6 +9,23 @@ struct Interval {
 	int start, end;
 	Interval(): start(0), end(0) {}
 	Interval(int s, int e): start(s), end(e) {}
+};
+class Solution2 {
+public:
+	// O(n)
+	vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+		auto cmp=[](Interval a, Interval b) { return a.end < b.start; };
+		auto bounds=equal_range(intervals.begin(), intervals.end(), newInterval, cmp);
+		auto lower=bounds.first, upper=bounds.second;
+		if (lower==upper) intervals.insert(lower,newInterval);
+		else {
+			--upper;
+			upper->start=min(upper->start, newInterval.start);
+			upper->end=max(upper->end, newInterval.end);
+			intervals.erase(lower,upper);
+		}
+		return intervals;
+	}
 };
 class Solution {
 public:
@@ -15,12 +35,12 @@ public:
 		int i = 0;
 
 		// push prefix
-		while (i < intervals.size() && intervals[i].end < newInterval.start){
+		while (i < (int)intervals.size() && intervals[i].end < newInterval.start){
 			res.push_back(intervals[i++]);
 		}
 
 		// merge intersection
-		while (i < intervals.size() && intervals[i].start <= newInterval.end){
+		while (i < (int)intervals.size() && intervals[i].start <= newInterval.end){
 			newInterval.start = min(newInterval.start, intervals[i].start);
 			newInterval.end = max(newInterval.end, intervals[i].end);
 			i++;
@@ -28,7 +48,7 @@ public:
 		res.push_back(newInterval);
 
 		// push suffix
-		while (i < intervals.size()){
+		while (i < (int)intervals.size()){
 			res.push_back(intervals[i++]);
 		}
 		return res;
@@ -67,7 +87,7 @@ public:
 };
 
 int main(){
-	Solution s;
+	Solution2 s;
 	vector<Interval> ints1{{1,3},{6,9}};
 	vector<Interval> ints2{{1,2},{3,5},{6,7},{8,10},{12,16}};
 	vector<Interval> res;

@@ -6,14 +6,14 @@ using namespace std;
 
 class Solution {
 public:
-    int lengthOfLongestSubstring(string s) {
-        vector<int> dict(256, -1);			// small universe, worth it
-        int maxlen = 0, start = -1;
-        for (int i = 0; i < s.size(); i++) {
-		if (dict[s[i]] > start)			// repeat
-			start = dict[s[i]];		// valid start
-		dict[s[i]] = i;				// update pos
-		maxlen = std::max(maxlen, i - start);
+  int lengthOfLongestSubstring(string s) {
+    vector<int> dict(256, -1);			// small universe, worth it
+    int maxlen = 0, start = -1;
+    for (int i = 0; i < s.size(); i++) {
+      if (dict[s[i]] > start)			// repeat
+        start = dict[s[i]];		// valid start
+		  dict[s[i]] = i;				// update pos
+		  maxlen = std::max(maxlen, i - start);
         }
         return maxlen;
     }

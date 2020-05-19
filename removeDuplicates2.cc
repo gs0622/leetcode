@@ -3,6 +3,30 @@ hint: two pointers
 */
 #include <bits/stdc++.h>
 using namespace std;
+class Solution3 {
+public:
+	int removeDuplicates(vector<int>& nums, int k=2) {
+    int i=0;
+    for (auto n:nums)
+      if (i<k || nums[i-k]!=n)
+        nums[i++]=n;
+    nums.resize(i);
+    return i;
+  }
+};
+class Solution2 {
+public:
+	int removeDuplicates(vector<int>& nums) {
+    int L,R,n=nums.size();
+    for (L=0,R=0; R<n; ++R) {
+      if (L<2 || nums[L-2]!=nums[R])
+        nums[L++]=nums[R];
+      // else // nums[L]==nums[R]
+    }
+    nums.resize(L);
+    return L;
+  }
+};
 class Solution {
 public:
 	// O(1) space in-place
@@ -33,13 +57,13 @@ public:
 	}
 };
 int main(){
-	Solution s;
+	Solution2 s;
 	vector<int> nums1{1,1,1,2,2,3};
-	int len = s.removeDuplicates1(nums1);
+	int len = s.removeDuplicates(nums1);
 	cout << len << endl;
 	for_each(begin(nums1), end(nums1), [](int n){cout<<n<<' ';}); cout << endl;
 	vector<int> nums2{0,0,1,1,1,2,3,3};
-	len = s.removeDuplicates1(nums2);
+	len = s.removeDuplicates(nums2);
 	cout << len << endl;
 	for_each(begin(nums2), end(nums2), [](int n){cout<<n<<' ';}); cout << endl;
 }

@@ -2,7 +2,7 @@
 using namespace std;
 class Solution {
 public:
-	O((m+n)/2)
+	O((m+n)/2) time and space
 	double median1(vector<int> nums1, vector<int>& nums2) {
 		int m=nums1.size(), n=nums2.size();
 		vector<int> dummy;

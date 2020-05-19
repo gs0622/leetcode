@@ -17,8 +17,8 @@ public:
 	void add1(int n) { nums.push_back(n); }
 	// O(log(n)) time make vector sorted
 	void add(int n) {
-		auto it = upper_bound(begin(nums), end(nums), n);
-		nums.insert(it, n);
+		auto it = upper_bound(begin(nums), end(nums), n); // it of greater than
+		nums.insert(it, n);                               // intert n here
 	}
 	// O(nlog(n))
 	bool find(int target) {

@@ -8,7 +8,7 @@ class Solution {
 		int i=lo, j=hi+1;
 		int pivot=nums[lo];
 		while (true) {
-			while (nums[++i] > pivot)
+			while (nums[++i] > pivot)	// tricky: make it decending
 				if (i==hi) break;
 			while (nums[--j] < pivot)
 				if (j==lo) break;	// redundant since [lo] acts as sentinel
@@ -19,6 +19,19 @@ class Solution {
 		return j;
 	}
 public:
+	int findKthLargest4(vector<int>& nums, int k) {
+		priority_queue<int, vector<int>, greater<int>> pq;
+		for (auto n: nums) {	// nlogk
+			pq.push(n);
+			if (pq.size() > k) pq.pop();
+		}
+		return pq.top();	// smallest among topK minheap
+	}
+	// O(nlogk)
+	int findKthLargest3(vector<int>& nums, int k) {
+		partial_sort(nums.begin(), nums.begin()+k, nums.end());
+		return nums[k-1];
+	}
 	int findKthLargest2(vector<int>& nums, int k) {
 		int lo=0, hi=nums.size()-1;
 		while (lo < hi) {
@@ -33,6 +46,7 @@ public:
 		}
 		return nums[lo];
 	}
+	// O(n) by quick select
 	int findKthLargest1(vector<int>& nums, int k) {
 		int lo=0, hi=nums.size()-1;
 		while (lo < hi) {
@@ -43,6 +57,7 @@ public:
 		}
 		return nums[lo];
 	}
+	// O(nlogn) naive one
 	int findKthLargest(vector<int>& nums, int k) {
 		std::sort(nums.begin(), nums.end(), std::greater<int>());
 		return nums[k-1]; // kth large, index from 1

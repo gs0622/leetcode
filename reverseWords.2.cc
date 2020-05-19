@@ -1,5 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
+class Solution2 {
+public:
+	void reverseWord(string &s) {
+    istringstream is(s);
+    stack<string> stk;
+    string w;
+    while (is>>w) stk.push(w);
+    string res=stk.top(); stk.pop();
+    while (stk.size()) {
+      res+=" ", res+=stk.top(), stk.pop();
+    }
+    s.swap(res);  
+  }
+};
 class Solution {
 public:
 	void reverseWord3(string &s) {
@@ -46,8 +60,8 @@ public:
 	}
 };
 int main(){
-	Solution so;
+	Solution2 so;
 	string s{"the sky is   blue"};
-	so.reverseWord3(s);
+	so.reverseWord(s);
 	cout << s << endl;
 }

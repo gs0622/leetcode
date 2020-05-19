@@ -5,6 +5,36 @@ DP, LIS (Longest Increasing Subsequence)
 using namespace std;
 class Solution {
 public:
+  int lengthOfLIS(vector<int>& A) { // O(n^2) time, O(n^2) space
+    int n=A.size();
+    vector<vector<int>> memo(n+1, vector<int>(n,-1));
+    function<int(int,int)> helper=[&](int pre, int cur) {
+      if (cur==n) return 0;
+      if (memo[pre+1][cur]!=-1) return memo[pre+1][cur];
+      int taken=0;
+      if (pre==-1||A[cur]>A[pre])
+        taken=1+helper(cur,cur+1);
+      int nottaken=helper(pre,cur+1);
+      memo[pre+1][cur]=max(taken,nottaken);
+      return memo[pre+1][cur];
+    };
+    return helper(-1,0);
+  }
+  int lengthOfLIS1(vector<int>& A) { // O(2^n) time, O(n^2) space
+    int n=A.size();
+    function<int(int,int)> helper=[&](int preVal, int cur) {
+      if (cur==n) return 0;
+      int taken=0;
+      if (A[cur]>preVal)
+        taken=1+helper(A[cur],cur+1);
+      int nottaken=helper(preVal,cur+1);
+      return max(taken,nottaken);
+    };
+    return helper(INT_MIN,0);
+  }
+};
+class Solution2 {
+public:
 	// O(nlog(n)), https://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
 	int lengthOfLIS(vector<int>& nums) {
 		vector<int> ans;
@@ -34,6 +64,8 @@ public:
 int main(){
 	vector<int> nums{10, 9, 2, 5, 3, 7, 101, 18};
 	Solution s;
+	Solution2 s2;
 	cout << s.lengthOfLIS(nums) << endl;
-	cout << s.lengthOfLIS2(nums) << endl;
+	cout << s2.lengthOfLIS(nums) << endl;
+	cout << s2.lengthOfLIS2(nums) << endl;
 }

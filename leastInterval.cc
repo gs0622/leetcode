@@ -55,6 +55,6 @@ public:
 int main(){
 	Solution s;
 	vector<char> tasks{'A','A','A','B','B','B'};
-	cout << s.leastInterval(tasks, 2) << endl;
-	cout << s.leastInterval1(tasks, 2) << endl;
+	cout << s.leastInterval(tasks, 0) << endl;
+	cout << s.leastInterval1(tasks, 0) << endl;
 }

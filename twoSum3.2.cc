@@ -19,7 +19,9 @@ public:
 class Solution2 {
 	unordered_map<int,int> nums;
 public:
+	// O(1) time, O(n) space
 	void add(int n) { ++nums[n]; }
+	// O(n) time
 	bool find(int target) {
 		for (auto n: nums) {
 			auto it = nums.find(target-n.first);
@@ -37,9 +39,10 @@ class Solution3 {
 	// Q: possible overflow in sum?
 	// Q: what about adding dup num?
 	// O(n^2) space, O(n) add, O(1) find
-	unordered_map<int, vector<pair<int,int>>> map;
+	unordered_map<int, vector<pair<int,int>>> map;	// sum: pair of elems
 	vector<int> nums;
 public:
+	// O(n) time, O(n^2) space
 	void add(int n) {
 		if (nums.size() > 1) {
 			for (auto i: nums)

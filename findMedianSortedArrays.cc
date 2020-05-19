@@ -1,3 +1,18 @@
+/* https://leetcode.com/problems/median-of-two-sorted-arrays/description/
+There are two sorted arrays nums1 and nums2 of size m and n respectively.
+Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+You may assume nums1 and nums2 cannot be both empty.
+
+Example 1:
+nums1 = [1, 3]
+nums2 = [2]
+The median is 2.0
+
+Example 2:
+nums1 = [1, 2]
+nums2 = [3, 4]
+The median is (2 + 3)/2 = 2.5
+*/
 #include <bits/stdc++.h>
 using namespace std;
 /* 
@@ -20,7 +35,7 @@ public:
 		int m1=kth(nums1.data(),m,nums2.data(),n,k+1);
 		if ((m+n)%2==0) return (kth(nums1.data(),m,nums2.data(),n,k)+m1)/2.0;
 		return m1;
-    }
+	}
 	int kth(int a[], int m, int b[], int n, int k) {
 		if (m < n) return kth(b,n,a,m,k);
 		if (n==0) return a[k-1];

@@ -1,4 +1,6 @@
-/*https://leetcode.com/problems/rotate-array/description/ */
+/*https://leetcode.com/problems/rotate-array/description/
+Given an array, rotate the array to the right by k steps, where k is non-negative.
+*/
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -35,7 +37,7 @@ public:
 		for (int i=0; i<n; ++i)
 			nums[(i+k)%n] = old[i];
 	}
-	// poor performance (klog(n))
+	// poor performance (kn^2)
 	void rotate4(vector<int>& nums, int k) {
 		while (k--) {
 			//nums.insert(nums.begin(), nums[nums.size()-1]);

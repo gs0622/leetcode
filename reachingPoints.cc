@@ -7,6 +7,11 @@ Given a starting point (sx, sy) and a target point (tx, ty), return True if and 
 using namespace std;
 class Solution {
 public:
+	// O(logN) where N = max(tx,ty).
+	// First line:
+	// if 2 target points are still bigger than 2 starting point, we reduce target points.
+	// Second line:
+	// check if we reduce target points to (x, y+kx) or (x+ky, y)
 	bool reachingPoints(int sx, int sy, int tx, int ty) {
 		while (sx<tx && sy<ty)
 			if (tx<ty) ty%=tx; else tx%=ty;

@@ -11,7 +11,7 @@ public:
 		for (int i=0; i<=s.size()-10; ++i) {
 			string ss = s.substr(i,10);
 			if (m[ss]==1) ans.push_back(ss); // only once
-			m[s.substr(i,10)] += 1;
+			m[ss] += 1;
 		}
 		return ans;
 	}

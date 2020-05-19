@@ -55,9 +55,10 @@ public:
 		function<void(int)> helper=[&](int i) {
 			res.push_back(sub);
 			for (int j=i; j<n; ++j) {
-				sub.push_back(nums[j]);	// res.back().push_back()
+				if (j>i && nums[j]==nums[j-1]) continue;
+				sub.push_back(nums[j]);	// res.back().push_back(), also as: taken
 				helper(j+1);
-				sub.pop_back();
+				sub.pop_back();		// not taken, fall into next j and helper
 			}
 		};
 		helper(0);
@@ -70,10 +71,10 @@ public:
 		int i, j, n, m=nums.size();
 		vector<vector<int>> res(1, vector<int>());	// empty one
 		for (i=0; i<m; ++i) {
-			n=res.size();	// n=1, 2, 4, ...etc
+			n=res.size();	                            // n=1, 2, 4, ...etc; for each previous list: think BFS
 			for (j=0; j<n; ++j) {
-				res.push_back(res[j]);		// clone all previous subset
-				res.back().push_back(nums[i]);	// pick this num into subset
+				res.push_back(res[j]);		              // clone all previous subset
+				res.back().push_back(nums[i]);	        // pick this num into subset
 			}
 		}
 		return res;

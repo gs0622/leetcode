@@ -5,6 +5,30 @@ Find the length of the longest substring T of a given string (consists of lowerc
 using namespace std;
 class Solution {
 public:
+	int longestSubstring2(string s, int k) {
+		unordered_map<char,int> mp;
+		for (auto c: s) ++mp[c];
+		int cnt=mp.size(), i=0, j=0,n=s.size(), res=0;
+		while (i<n) {
+			if (mp.count(s[i])) {
+				--mp[s[i]];
+				if (mp[s[i]]==0) --cnt;
+			}
+			++i;
+			while (cnt==0) {
+				if (mp,count(s[j])) {
+					++mp[s[j]], ++cnt;
+				}
+				++j;
+			}
+		}
+		return res;
+	}
+/*
+in the first pass I record counts of every character in a hashmap
+in the second pass I locate the first character that appear less than k times in the string. this character is definitely not included in the result, and that separates the string into two parts.
+keep doing this recursively and the maximum of the left/right part is the answer.
+*/
 	int longestSubstring1(string s, int k) {
 		if (s.empty()) return 0;
 		if (k==0) return s.size();
@@ -37,8 +61,8 @@ public:
 };
 int main(){
 	Solution s;
-	cout << s.longestSubstring("",2) << endl;
-	cout << s.longestSubstring("aaabb",3) << endl;
-	cout << s.longestSubstring1("abcadababb",2) << endl;
+	//cout << s.longestSubstring2("",2) << endl;
+	//cout << s.longestSubstring2("aaabb",3) << endl;
 	cout << s.longestSubstring("abcadababb",2) << endl;
+	cout << s.longestSubstring2("abcadababb",2) << endl;
 }

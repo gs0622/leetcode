@@ -1,3 +1,7 @@
+/* https://leetcode.com/problems/valid-triangle-number/description/
+
+Given an array consists of non-negative integers, your task is to count the number of triplets chosen from the array that can make triangles if we take them as side lengths of a triangle.
+*/
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {

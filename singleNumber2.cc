@@ -12,6 +12,7 @@ using namespace std;
 
 class Solution {
 public:
+	// O(n) time, O(1) space
 	int singleNumber(vector<int>& nums) {
 		int ones = 0, twos = 0;
 		for (auto n: nums) {
@@ -20,6 +21,7 @@ public:
 		}
 		return ones;
 	}
+	// O(32n) time, O(1) space
 	int singleNumber2(vector<int>& nums) {
 		int cnt, res = 0;
 		for (int i = 0; i < 32; i++) {

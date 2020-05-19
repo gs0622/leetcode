@@ -1,3 +1,8 @@
+/* https://leetcode.com/problems/count-binary-substrings/description/
+Give a string s, count the number of non-empty (contiguous) substrings that have the same number of 0's and 1's, and all the 0's and all the 1's in these substrings are grouped consecutively.
+
+Substrings that occur multiple times are counted the number of times they occur.
+*/
 #include <algorithm>
 #include <iostream>
 #include <string>
@@ -5,6 +10,18 @@
 using namespace std;
 class Solution {
 public:
+	int countBinarySubstrings3(string s) {
+		int res=0, cur=1, pre=0, n=s.size();
+		for (int i=1; i<n; ++i) {
+			if (s[i-1]==s[i]) ++cur;	// until 1/0 flip
+			else {
+				res+=min(pre,cur);	// e.g., 0001111 => min(3,4)
+				pre=cur;
+				cur=1;
+			}
+		}
+		return res;
+	}
 	int countBinarySubstrings(string s) {
 		int ans=0, base=0, slow=0, n=s.size();
 		while (base<n) {

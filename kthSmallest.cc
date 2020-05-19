@@ -42,7 +42,7 @@ public:
                      
                 }
         }
-        int kthSmallest2(TreeNode* root, int k) {
+  int kthSmallest2(TreeNode* root, int k) {
 		TreeNode *cur=root;
 		stack<TreeNode*> stk;
 		while (cur || !stk.empty()) {

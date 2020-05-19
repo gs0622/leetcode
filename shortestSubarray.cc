@@ -8,6 +8,25 @@ If there is no non-empty subarray with sum at least K, return -1.
 using namespace std;
 class Solution {
 public:
+	int shortestSubarray(vector<int>& A, int K) {
+    int n=A.size(),res=INT_MAX,sum=0;
+    deque<int> dq;
+    unordered_map<int,int> mp;
+    for (int i=0;i<n;++i) {
+      sum+=A[i];
+      mp[i]=sum;
+      if (sum>=K) res=min(res,i+1);
+      while (dq.size()&&sum-mp[dq.front()]>=K)
+        res=min(res,i-dq.front()),dq.pop_front();
+      while (dq.size()&&sum<=mp[dq.back()])
+        dq.pop_back();
+      dq.push_back(i);
+    }
+    return res==INT_MAX? -1: res;
+  }
+};
+class Solution2 {
+public:
 	// O(nlog(n))?
 	int shortestSubarray2(vector<int>& A, int K) {
 		int n=A.size(), res=INT_MAX, sum=0;
@@ -59,13 +78,13 @@ public:
 int main(){
 	Solution s;
 	vector<int> A1{1};
-	cout << s.shortestSubarray2(A1,1) << endl;
+	cout << s.shortestSubarray(A1,1) << endl;
 	vector<int> A2{1,2};
-	cout << s.shortestSubarray2(A2,4) << endl;
+	cout << s.shortestSubarray(A2,4) << endl;
 	vector<int> A3{2,-1,2};
-	cout << s.shortestSubarray2(A3,3) << endl;
+	cout << s.shortestSubarray(A3,3) << endl;
 	vector<int> A4{75,-32,50,32,97};
-	cout << s.shortestSubarray2(A4,129) << endl;
+	cout << s.shortestSubarray(A4,129) << endl;
 	vector<int> A5{-1,-2,-3,2,3,4};
-	cout << s.shortestSubarray2(A5,5) << endl;
+	cout << s.shortestSubarray(A5,5) << endl;
 }

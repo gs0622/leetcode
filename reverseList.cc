@@ -8,6 +8,31 @@ struct ListNode {
 	ListNode *next;
 	ListNode(int x) : val(x), next(NULL) {}
 };
+class Solution2 {
+public:
+    ListNode* reverseList1(ListNode* head) {
+        ListNode *pre = new ListNode(0), *cur = head;
+        pre -> next = head;
+        while (cur && cur -> next) {
+            ListNode* temp = pre -> next;
+            pre -> next = cur -> next;
+            cur -> next = cur -> next -> next;
+            pre -> next -> next = temp;
+        }
+        return pre -> next;
+    }
+    ListNode* reverseList(ListNode* head, ListNode* tail=nullptr) {
+        ListNode dummy(0), *cur=head, *pre=&dummy;
+        dummy.next=head;
+        while (cur&&cur->next) {
+            auto next=pre->next;
+            pre->next=cur->next;
+            cur->next=cur->next->next;
+            pre->next->next=next;
+        }
+        return pre->next;
+    }
+};
 class Solution {
 	// O(n) time and space
 	ListNode* helper(ListNode *cur, ListNode *prev) {
@@ -72,10 +97,10 @@ public:
 	}
 };
 int main(){
-	Solution s;
+	Solution2 s;
 	ListNode n1(1), n2(2), n3(3), n4(4), n5(5), n6(6);
 	n1.next=&n2, n2.next=&n3, n3.next=&n4, n4.next=&n5, n5.next=&n6;
-	ListNode *p = s.reverseList5(&n1);
+	ListNode *p = s.reverseList1(&n1);
 	while (p) cout << p->val << " ", p = p->next;
 	cout << endl;
 }

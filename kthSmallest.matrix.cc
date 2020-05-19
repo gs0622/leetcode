@@ -5,6 +5,20 @@ https://leetcode.com/problems/k-th-smallest-prime-fraction/discuss/115819/Summar
 */
 #include <bits/stdc++.h>
 using namespace std;
+class Solution2 {
+public:
+  int kthSmallest(vector<vector<int>>& m, int k) {
+    int n=m.size(),lo=m[0][0],hi=m[n-1][n-1];
+    while (lo<hi) { // n*log(n)*log(hi-lo)
+      int mi=lo+(hi-lo)/2,cnt=0;
+      for (int r=0;r<n;++r)
+        cnt+=upper_bound(m[r].begin(),m[r].end(),mi)-m[r].begin();
+      if (cnt<k) lo=mi+1;
+      else hi=mi;
+    }
+    return lo;
+  }
+}
 class Solution {
 	struct compare {
 		bool operator()(const pair<int,pair<int, int> >& a, const pair<int,pair<int, int> >& b) {

@@ -9,12 +9,33 @@ using namespace std;
 struct ListNode {
 	int val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode(int x) : val(x), next(nullptr) {}
 	ListNode(int x, ListNode *y) : val(x), next(y) {}
 };
 
 class Solution {
 public:
+	ListNode* swapPairs4(ListNode* head) {
+		function<ListNode*(ListNode*)> helper=[](ListNode *cur) {
+			if (!cur || !cur->next) return cur;
+			ListNode *next = cur->next;
+			cur->next = helper(cur->next->next);
+			next->next=cur;
+			return next;
+		};
+		return helper(head);
+	}
+	ListNode* swapPairs3(ListNode* head) {
+		ListNode dummy(0); dummy.next = head;
+		// p->q->r->s ==> q->p->r->s;
+		ListNode *pre = &dummy, *p = head;
+		while (p && p->next) {
+			ListNode *q = p->next, *r = q->next;
+			pre->next = q, q->next = p, p->next = r;	// reverse
+			pre = p, p = r;
+		}
+		return dummy.next;
+	}
 	ListNode* swapPairs2(ListNode* head) {
 		ListNode dummy(0, head);
 		ListNode *prev = &dummy, *p = head;
@@ -59,6 +80,6 @@ int main(void) {
 	ListNode *p = &n0;
 	while (p) {cout << p->val << ' ', p=p->next;} cout << endl;
 	Solution s;
-	p = s.swapPairs2(&n0);
+	p = s.swapPairs3(&n0);
 	while (p) {cout << p->val << ' ', p=p->next;} cout << endl;
 }

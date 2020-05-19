@@ -1,8 +1,17 @@
+/* https://leetcode.com/problems/sort-array-by-parity/description/
+
+Given an array A of non-negative integers, return an array consisting of all the even elements of A, followed by all the odd elements of A.
+You may return any answer array that satisfies this condition.
+
+Note:
+1 <= A.length <= 5000
+0 <= A[i] <= 5000
+*/
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {
 public:
-	// O(n) time
+	// O(n) time, two-pointer
 	vector<int> sortArrayByParity1(vector<int>& A) {
 		int i,j,n=A.size();
 		for (i=0,j=0; i<n; ++i)

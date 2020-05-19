@@ -1,6 +1,43 @@
+/* https://leetcode.com/problems/3sum/description/
+Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+
+Note:
+The solution set must not contain duplicate triplets.
+Example:
+Given array nums = [-1, 0, 1, 2, -1, -4],
+
+A solution set is:
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+
+*/
 #include <bits/stdc++.h>
 using namespace std;
-
+class Solution2 {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(),nums.end());  // O(nlogn)
+        int n=nums.size();
+        for (int i=0; i<n-2; ++i) {     // O(n)
+            if (i>0 && nums[i]==nums[i-1]) continue;
+            int lo=i+1, hi=n-1;
+            while (lo<hi) {             // O(n) two pointer
+                int sum = nums[i]+nums[lo]+nums[hi];
+                if (sum==0) {
+                    res.push_back({nums[i],nums[lo],nums[hi]});
+                    while (lo<hi&&nums[lo]==nums[lo+1]) ++lo;
+                    while (lo<hi&&nums[hi]==nums[hi-1]) --hi;
+                    ++lo,--hi;
+                } else if (sum<0) ++lo;
+                else --hi;
+            }
+        }
+        return res;
+    }
+};
 class Solution {
 public:
 	// O(n^2) two-pointer
@@ -9,6 +46,7 @@ public:
 		vector<vector<int>> res;
 		sort(begin(nums), end(nums));
 		for (i=0; i<n-2; ++i) {
+			// if (i>0 && nums[i]==nums[i-1]) continue;
 			if (i==0 || (i>0 && nums[i]!=nums[i-1])) {
 				int lo=i+1, hi=n-1;	// reduce to two sum
 				while (lo<hi) {
@@ -89,13 +127,14 @@ public:
 
 int main(void)
 {
-    vector<int> nums{-1, 0, 1, 2, -1, -4};
-    //vector<int> nums(3000, 0);
-    Solution s;
-    vector<vector<int> > r = s.threeSum1(nums);
+    Solution2 s;
+    vector<int> nums{1,0,-1,0,-2,2};
+    //vector<int> nums{-1, 0, 1, 2, -1, -4};
+    //vector<int> nums(30, 0);
+    vector<vector<int> > r = s.threeSum(nums);
     for (auto x: r) {
         for (auto y: x)
-            //cout << y << " ";
+            cout << y << " ";
         cout << endl;
     }
     return 0;

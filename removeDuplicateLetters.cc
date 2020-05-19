@@ -1,6 +1,26 @@
 /*https://leetcode.com/problems/remove-duplicate-letters/description/*/
 #include <bits/stdc++.h>
 using namespace std;
+class Solution2 {
+public:
+	string removeDuplicateLetters(string s) {
+    vector<int> cnt(26,0), vst(26,0);
+
+    for (auto c: s) ++cnt[c-'a'];   // occurance
+
+    string res;
+    for (auto c: s) {
+      --cnt[c-'a'];
+      if (vst[c-'a']) continue;     // dup
+      while (c < res.back() &&      // lex order
+        cnt[res.back()-'a'])
+        vst[res.back()-1] = 0, res.pop_back();
+      vst[c-'a'] = 1;
+      res += c;
+    }
+    return res;   
+  }
+};
 class Solution {
 public:
 	string removeDuplicateLetters(string s) {

@@ -1,10 +1,29 @@
-/*
+/* https://leetcode.com/problems/maximum-swap/description/
 Given a non-negative integer, you could swap two digits at most once to get the maximum valued number. Return the maximum valued number you could get.
 */
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {
 public:
+	int maximumSwap1(int num) {
+    string s=to_string(num);
+    int mx=-1,mxid=-1,left=-1,right=-1,n=s.size();
+    for (int i=n-1;i>=0;--i) {
+      if (s[i]>mx) {
+        mx=s[i],mxid=i;
+        continue;
+      }
+      if (mx>s[i])
+        left=i,right=mxid;
+    }
+    if (left==-1) return num;
+    swap(s[left],s[right]);
+    return stoi(s);
+  }
+};
+class Solution2 {
+public:
+	// O(n^2), n for digits
 	int maximumSwap1(int num) {
 		string s=to_string(num);
 		if (s.size()==1) return num;	// no swap
@@ -37,7 +56,7 @@ public:
 	}
 };
 int main(){
-	Solution s;
+	Solution2 s;
 	cout << s.maximumSwap(2763) << " " << s.maximumSwap1(2763) << endl;
 	cout << s.maximumSwap(98368) << " " << s.maximumSwap1(98368) << endl;
 	//cout << s.maximumSwap(98368) << endl;

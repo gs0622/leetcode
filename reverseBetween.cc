@@ -14,13 +14,13 @@ public:
 	ListNode* reverseBetween(ListNode* head, int m, int n) {
 		ListNode dummy(0), *pre = &dummy;
 		dummy.next = head;
-		for (int i=0; i<m-1; ++i)		//pre^      next^ 
-			pre = pre->next;		// 1^ 2 3 4 5
-		ListNode *cur = pre->next;		//    2^
+		for (int i=0; i<m-1; ++i)	  //pre^      next^ 
+			pre = pre->next;		      // 1^ 2 3 4 5
+		ListNode *cur = pre->next;	//    2^
 		stack<ListNode*> stk;
 		for (int i=0; i<n-m; ++i) {
 			stk.push(cur);
-			cur = cur->next;	
+			cur = cur->next;
 		}
 		ListNode *next = cur->next;		// save the next
 		pre->next = cur;

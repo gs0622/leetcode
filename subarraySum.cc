@@ -4,6 +4,19 @@
 #include <unordered_map>
 #include <vector>
 using namespace std;
+class Solution2 {
+public:
+	int subarraySum(vector<int>& nums, int k) {
+		map<int,int> pre{{0,1}};
+		int res=0, sum=0;
+		for (auto n: nums) {
+			sum += n;
+			res += pre[sum-k];
+			pre[sum]++;
+		}
+		return res;
+	}
+};
 class Solution {
 public:
 	int subarraySum(vector<int>& nums, int k) {
@@ -16,6 +29,7 @@ public:
 		}
 		return ans;
 	}
+  // brute-force
 	int subarraySum2(vector<int>& nums, int k) {
 		int i, j, n=nums.size(), sum, cnt=0;
 		for (i=0; i<n; ++i) {

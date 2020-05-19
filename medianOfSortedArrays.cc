@@ -4,9 +4,35 @@
 using namespace std;
 class Solution {
 public:
+	// O(nlogk)
+	double medianOfSortedArrays3(vector<vector<int>> &nums) {
+		int m=0;
+		for (auto &r: nums) m+=r.size();
+		typedef vector<int>::iterator vi;
+		struct mygreater {
+			bool operator()(pair<vi,vi>& a, pair<vi,vi>& b) {
+				return *a.first > *b.first;
+			};
+		};
+		priority_queue<pair<vi,vi>, vector<pair<vi,vi>>, mygreater> pq;
+
+		for (auto &r: nums)	// think why use reference
+			pq.push({r.begin(), r.end()});
+
+		int median;
+		for (int i=0; i<m/2; ++i) {
+			auto p=pq.top(); pq.pop();
+			if (i+1==m/2) median=*p.first;
+			++p.first;
+			if (p.first!=p.second) pq.push(p);
+		}
+		if (m%2) return median;
+		else return (median+*(pq.top().first))/2.0;
+	}
+	// O(nlogk)
 	double medianOfSortedArrays2(vector<vector<int>> &nums) {
-		int n = 0;
-		for_each(begin(nums), end(nums), [&](vector<int>& a){ n+=a.size();});
+		int n=nums.size(), m=0;
+		for_each(begin(nums), end(nums), [&](vector<int>& a){ m+=a.size();});
 
 		// tuple: val,arr,idx
 		struct mygreater {
@@ -16,18 +42,18 @@ public:
 		};
 		priority_queue<tuple<int,int,int>, vector<tuple<int,int,int>>, mygreater> pq; // minheap
 
-		for (int i=0; i<nums.size(); ++i)	// push in the 1st element from all arrays; val, array-id, array-idx
+		for (int i=0; i<n; ++i)	// push in the 1st element from all arrays; val, array-id, array-idx
 			pq.push(make_tuple(nums[i][0], i, 0));
 
 		int med;
-		for (int i=0; i<n/2; ++i) {
+		for (int i=0; i<m/2; ++i) {
 			tuple<int,int,int> top = pq.top(); pq.pop();
-			if (i+1==n/2) med=get<0>(top);
+			if (i+1==m/2) med=get<0>(top);
 			int arr=get<1>(top), idx=get<2>(top);
-			if (idx < nums[arr].size()-1)
+			if (idx < (int)nums[arr].size()-1)
 				pq.push(make_tuple(nums[arr][idx+1], arr, idx+1)); 
 		}
-		if (n%2) return med;			// n is odd
+		if (m%2) return med;			// n is odd
 		return (med + get<0>(pq.top())) / 2.0;	// n is even, get one more from pq
 	}
 	double medianOfSortedArrays1(vector<vector<int>> &nums) {
@@ -36,7 +62,7 @@ public:
 		priority_queue<int, vector<int>, greater<int>> minheap;
 		unordered_map<int,int> m; // map of key and its array from
 		vector<vector<int>::iterator> its(nums.size());
-		for (int i=0; i<nums.size(); ++i) {
+		for (int i=0; i<n; ++i) {
 			its[i] = begin(nums[i]);	// min per array
 			minheap.push(*its[i]);		// push into minheap
 			m[*its[i]] = i;			// update it-array mapping
@@ -67,7 +93,7 @@ public:
 	}
 	// O(n) space ,O(nlog(n)) time, while n is the total elements
 	double medianOfSortedArrays(vector<vector<int>> &nums) {
-		int m=nums.size(), cnt=0;
+		int cnt=0;
 		vector<int> res;
 		for (auto x: nums) {
 			res.insert(begin(res), begin(x), end(x));
@@ -85,10 +111,12 @@ int main(){
 		generate_n(begin(n), 10, [&i](){return ++i;});
 
 	random_shuffle(begin(nums), end(nums));
-	//for (auto n: nums) {
-	//	copy(begin(n), end(n), ostream_iterator<int>(cout, " "));
-	//	cout << endl;
-	//}
+	//nums[9].push_back(101);
+	for (auto n: nums) {
+		copy(begin(n), end(n), ostream_iterator<int>(cout, " "));
+		cout << endl;
+	}
 	Solution s;
 	cout << s.medianOfSortedArrays2(nums) << endl;
+	cout << s.medianOfSortedArrays3(nums) << endl;
 }

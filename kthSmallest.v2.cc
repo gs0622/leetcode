@@ -12,11 +12,11 @@ public:
 	int kthSmallest(TreeNode* root, int k) {
 		TreeNode *cur = root;
 		stack<TreeNode *> parent;
-		while (true) {
+		while (true) {  // while (cur && stk.size())
 			if (cur) { // go left
 				parent.push(cur);
 				cur = cur->left;
-			} else { // backtrak one, go righ once
+			} else { // backtrak one, go right once
 				if (!parent.empty()) {
 					cur = parent.top();
 					parent.pop();

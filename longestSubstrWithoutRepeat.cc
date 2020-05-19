@@ -1,6 +1,58 @@
+/* https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+*/
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4 { // brute-force O(n^2)
+public:
+    int lengthOfLongestSubstring(string s) {
+        int res=0, n=s.size(), i, j;
+        for (i=0; i<n; ++i) {
+            int cnt[256]={};      // counter map
+            for (j=i; j<n; ++j) {
+                ++cnt[s[j]];      // see s[j]
+                if (cnt[s[j]]>1) break; // repeat
+            }
+            res=max(res,j-i);     // j is the repeat; (j-1)-i+i
+        }
+        return res;
+    }
+};
+
+class Solution3 {
+public:
+	int lengthOfLongestSubstring(string s) {
+		int cnt[256]={};		// ascii only
+		int res=0, sub=0, n=s.size();
+		for (int i=0,j=0; i<n; ++i) {
+			//if (cnt[s[i]]==0) ++sub;		// invariant
+			++cnt[s[i]];				// seen
+			while (cnt[s[i]]>1) {			// maintain invariant
+			//if (cnt[s[i]]>1) {			// think why if is not working: pwwkew; because it's j moving
+				--cnt[s[j++]];
+				//if (cnt[s[j]]==0) --sub;
+				//++j;
+			}
+			res = max(res, i-j+1);			// update window length
+		}
+		return res;
+	}
+};
+class Solution2 {
+public:
+	// O(n) two pointers
+	int lengthOfLongestSubstring(string s) {
+		int cnt[256]={};
+		int res=0, n=s.size();
+		for (int i=0, j=0; i<n; ++i) {
+			cnt[s[i]]++;				// seen
+			while (cnt[s[i]]>1)			// maintain invariant
+				--cnt[s[j]], ++j;
+			res=max(res, i-j+1);
+		}
+		return res;
+	}
+};
 class Solution {
 public:
 	// O(n) two pointers
@@ -58,18 +110,19 @@ int longest(string s) {
 }
 
 int main(void) {
-    Solution s;
+    Solution2 s;
+    Solution3 ss;
     string s0("abcabcbb");
     string s1("bbbbb");
     string s2("pwwkew");
     string s3("dvdf");
-    cout << s.lengthOfLongestSubstring1(s0) << " ";
-    cout << s.lengthOfLongestSubstring2(s0) << endl;
-    cout << s.lengthOfLongestSubstring1(s1) << " ";
-    cout << s.lengthOfLongestSubstring2(s1) << endl;
-    cout << s.lengthOfLongestSubstring1(s2) << " ";
-    cout << s.lengthOfLongestSubstring2(s2) << endl;
-    cout << s.lengthOfLongestSubstring1(s3) << " ";
-    cout << s.lengthOfLongestSubstring2(s3) << endl;
+/*    cout << ss.lengthOfLongestSubstring(s0) << " ";
+    cout << s.lengthOfLongestSubstring(s0) << endl;
+    cout << ss.lengthOfLongestSubstring(s1) << " ";
+    cout << s.lengthOfLongestSubstring(s1) << endl;*/
+    cout << ss.lengthOfLongestSubstring(s2) << " ";
+    cout << s.lengthOfLongestSubstring(s2) << endl;
+    cout << ss.lengthOfLongestSubstring(s3) << " ";
+    cout << s.lengthOfLongestSubstring(s3) << endl;
     return 0;
 }

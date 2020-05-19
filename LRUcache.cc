@@ -1,19 +1,81 @@
+/*
+  https://leetcode.com/problems/lru-cache/description/
+
+  Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.
+
+  get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+  put(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+
+  Follow up:
+  Could you do both operations in O(1) time complexity?
+ */
 #include <bits/stdc++.h>
 using namespace std;
+class LRUCache2 {
+  list<pair<int,int>> dq;   // {key: val}
+  int cap;
+public:
+  LRUCache2(int capicity) { cap = capicity; }
+  int get(int key) {
+    auto it=find_if(dq.begin(), dq.end(), [&](pair<int,int> p){ return p.first==key; } );  // O(n)
+    if (it==dq.end()) return -1;    // no, return not found
+    auto p = *it;                   // pair of {key: val}
+    dq.erase(it);                   // remove old entry
+    dq.push_front(p);               // enqueue new to the front
+    return p.second;                // return val
+  }
+  void put(int key, int val) {
+      if (get(key)==-1) {           // O(n)
+        if (dq.size()==cap)         // evict in LRU policy
+          dq.pop_back();
+        dq.emplace_front(key,val);
+      } else {                      // exist
+        dq.begin()->second = val;
+      }
+  }
+};
+class LRUCache1 {
+  list<pair<int,int>> dq; // {key,val}
+  unordered_map<int,list<pair<int,int>>::iterator> mp;  // {key: iterator}
+  int cap;
+public:
+  LRUCache1(int capicity) { cap = capicity; }
+  int get(int key) {
+      if (!mp.count(key)) return -1;    // O(1) time
+      auto it = mp[key];                // O(1) time
+      auto p = *it;
+      dq.erase(it);
+      dq.push_front(p);
+      mp[key]=dq.begin();
+      return p.second;
+  }
+  void put(int key, int val) {
+      if (get(key)!=-1) {
+        dq.front().second = val;
+        return;
+      }
+      if (dq.size()==cap) {
+        mp.erase(dq.back().first);
+        dq.pop_back();
+      }
+      dq.emplace_front(key,val);
+      mp[key]=dq.begin();
+  }
+};
 class LRUCache {
-	unordered_map<int,pair<int,list<int>::iterator>> mp;	// key, posision (iterator) map
-	list<int> dq;						// key
+	unordered_map<int,pair<int,list<int>::iterator>> mp;	// {key: {val, iterator}} 
+	list<int> dq;						// {key}
 	int cap;
 public:
 	LRUCache(int capacity) { cap = capacity; }
 	int get(int key) {
 		if (mp.count(key) == 0)
 			return -1;
-		auto p = mp[key];
-		dq.erase(p.second);
-		dq.push_front(key);
-		mp[key]={p.first, dq.begin()};
-		return p.first;
+		auto p = mp[key];               // p = {val, iterator}
+		dq.erase(p.second);             // O(1) evict dq iterator
+		dq.push_front(key);             // O(1) add to head
+		mp[key]={p.first, dq.begin()};  // update {key: {val, iterator}}
+		return p.first;                 // return val
 	}
 	void put(int key, int val) {
 		if (dq.size() < cap || mp.count(key)) {
@@ -37,7 +99,7 @@ void test1(){
 	cout << cache.get(2) << endl;
 }
 void test2(){
-	LRUCache c(10);
+	LRUCache1 c(10);
 	c.put(10,13);
 	c.put(3,17);
 	c.put(6,11);
@@ -113,7 +175,7 @@ void test3(){
 	cout << cache.get(4) << endl;
 }
 void test4(){
-	LRUCache cache(2);
+	LRUCache2 cache(2);
 	cout << cache.get(2) << endl;
 	cache.put(2,6);
 	cout << cache.get(1) << endl;
@@ -124,7 +186,7 @@ void test4(){
 }
 int main() {
 	//test1();
-	//test2();
+	test2();
 	//test3();
-	test4();
+	//test4();
 }

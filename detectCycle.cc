@@ -8,6 +8,18 @@ struct ListNode {
 };
 class Solution {
 public:
+	// O(n) time, O(n) space
+	ListNode *detectCycle3(ListNode *head) {
+		unordered_set<ListNode*> st;
+		ListNode *cur = head;
+		while (cur) {
+			if (st.count(cur)) return cur;
+			st.insert(cur);
+			cur = cur->next;
+		}
+		return nullptr;
+	}
+	// O(n) time, O(1) space
 	ListNode *detectCycle2(ListNode *head) {
 		ListNode *s=head, *f=head;
 		while (f && f->next) {
@@ -62,7 +74,7 @@ int main(){
 	//n4.next=&n2;
 	ListNode n5(5);
 	n4.next=&n5;
-	n5.next=&n3;
-	ListNode *p=s.detectCycle(&n1);
+	n5.next=&n2;
+	ListNode *p=s.detectCycle3(&n1);
 	if (p) cout << p->val << endl;
 }

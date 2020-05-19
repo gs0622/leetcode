@@ -15,21 +15,21 @@ public:
 		for (i=31; i>=0; --i) {
 			mask |= 1 << i;		// bit-by-bit from MSB to LSB
 			unordered_set<int> prefixes;
-			cout << std::dec << i << ": ";
+			//cout << std::dec << i << ": ";
 			for (auto num: nums) {
-				cout << std::hex << num << " & " << mask <<" (" << (mask & num) << ") ";
+				//cout << std::hex << num << " & " << mask <<" (" << (mask & num) << ") ";
 				prefixes.insert(mask & num);
 			}
 			cout << endl;
 			int tmp = res | (1 << i); // build max from bit-by-bit
 			for (auto prefix: prefixes) {
 				if (prefixes.count(tmp ^ prefix) > 0) {
-					cout << std::hex << tmp << ": " << prefix << ": " << res << " ";
+					//cout << std::hex << tmp << ": " << prefix << ": " << res << " ";
 					res = tmp;
 					break;
 				}
 			}
-			cout << endl;
+			//cout << endl;
 		}
 		return res;
 	}

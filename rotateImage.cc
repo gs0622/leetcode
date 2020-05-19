@@ -5,7 +5,7 @@ class Solution {
 public:
 	void rotate(vector<vector<int>>& m) {
 		int n=m.size();
-		for (int i=0; i<n/2; ++i) {
+		for (int i=0; i<n/2; ++i) {       // shells in n/2 layers
 			for (int j=i; j<n-i-1; ++j) {
 				int tmp=m[i][j];
 				m[i][j]=m[n-j-1][i];

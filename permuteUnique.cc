@@ -1,4 +1,7 @@
 /* https://leetcode.com/problems/permutations-ii/description/
+
+#backtracking
+#dfs
 */
 #include <algorithm>
 #include <iostream>
@@ -13,11 +16,20 @@ class Solution {
 		}
 		std::reverse(nums.begin()+i+1, nums.end());
 		if (i==-1) return nums;
-		auto it = std::upper_bound(nums.begin()+i+1, nums.end(), nums[i]);
+		auto it = std::upper_bound(nums.begin()+i+1, nums.end(), nums[i]);	// swim up to archive 'next'
 		swap(nums[i], *it);
 		return nums;
 	}
 public:
+	vector<vector<int>> permuteUnique1(vector<int>& nums) {
+		vector<vector<int>> res;
+		vector<int> tmp = nums;
+		sort(tmp.begin(), tmp.end());
+		do {
+			res.push_back(tmp);
+		} while (next_permutation(tmp.begin(), tmp.end()));
+		return res;
+	}
 	vector<vector<int>> permuteUnique(vector<int>& nums) {
 		vector<vector<int>> ans;
 		vector<int> ret = nextPermutation(nums);
@@ -32,7 +44,14 @@ public:
 int main(){
 	Solution s;
 	vector<int> nums{1,1,2};
-	vector<vector<int>> r = s.permuteUnique(nums);
+	vector<vector<int>> r;
+	r = s.permuteUnique(nums);
+	for (auto x: r) {
+		for (auto y: x) cout << y << " ";
+		cout << endl;
+	}
+	cout << endl;
+	r = s.permuteUnique1(nums);
 	for (auto x: r) {
 		for (auto y: x) cout << y << " ";
 		cout << endl;

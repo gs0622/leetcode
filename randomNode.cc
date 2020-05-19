@@ -12,6 +12,23 @@ struct ListNode {
 	ListNode *next;
 	ListNode(int x) : val(x), next(NULL) {}
 };
+class Solution2 {
+  ListNode *root;
+public:
+	Solution2(ListNode* head) { root=head; }
+	int getRandom() {
+    int res=root->val;
+    ListNode* next=root->next;
+    int i=2;
+    while (next) {
+      int j=rand()%i;
+      if (j==0) res = next->val;
+      ++i;
+      next=next->next;
+    }
+    return res;
+  }
+};
 class Solution {
 	vector<ListNode*> nodes;
 public:

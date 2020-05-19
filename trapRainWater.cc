@@ -4,7 +4,7 @@ hint: monotonous decrease stack
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {
-public:
+public: // O(n) time and space
 	int trap1(vector<int>& A) {
 		int i=0, n=A.size(), res=0;
 		stack<int> stk;
@@ -17,7 +17,6 @@ public:
 					res += (min(A[stk.top()],A[i])-A[bot])*
 					(i-stk.top()-1);	// think why i-stk.top()-1, L/R boundries are excluded
 			}
-
 		}
 		return res;
 	}
@@ -41,6 +40,7 @@ public:
 };
 int main(){
 	Solution s;
-	vector<int> nums{0,1,0,2,1,0,1,3,2,1,2,1};
+  //vector<int> nums{0,1,0,2,1,0,1,3,2,1,2,1};
+	vector<int> nums{3,2,1,4};
 	cout << s.trap(nums) << ": " << s.trap1(nums) << endl;
 }
